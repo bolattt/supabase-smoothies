@@ -12,21 +12,20 @@ const Create = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!title || !method || !rating) {
       setFormError("Please fill in all the fields correctly");
       return;
     }
     const { data, error } = await supabase
       .from("smoothies")
-      .insert([{ title, method, rating }]);
+      .insert([{ title, method, rating }])
+      .select();
 
     if (error) {
       console.log(error);
       setFormError("Please fill in all the fields correctly");
     }
     if (data) {
-      console.log(data);
       setFormError(null);
       navigate("/");
     }
