@@ -16,7 +16,10 @@ const Home = () => {
 
   useEffect(() => {
     const fetchSmoothies = async () => {
-      const { data, error } = await supabase.from("smoothies").select();
+      const { data, error } = await supabase
+        .from("smoothies")
+        .select()
+        .order(orderBy, { ascending: false });
 
       if (error) {
         setFetchError("Couldn't fetch the smoothies");
@@ -29,14 +32,19 @@ const Home = () => {
       }
     };
     fetchSmoothies();
-  }, []);
+  }, [orderBy]);
   return (
     <div className="page home">
       {fetchError && <p>{fetchError} </p>}
       {smoothies && (
         <div className="smoothies">
           <div className="order-by">
-            <p>Order by:</p>
+            <p>
+              Order by:{" "}
+              {orderBy === "created_at"
+                ? "Time Created"
+                : orderBy[0].toUpperCase() + orderBy.slice(1)}
+            </p>
             <button onClick={() => setOrderBy("created_at")}>
               Time Created
             </button>
